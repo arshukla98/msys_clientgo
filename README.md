@@ -175,3 +175,94 @@ apimachinery  code-generator  gengo  klog  utils
 
 controlplane msys_clientgo on  main via 🐹 v1.19 ➜
 ```
+
+## Generate Clientset, Listers, Informer and Deepcopy funcs
+
+- Navigate to $GOPATH/src. Note the exact time.
+
+```
+controlplane msys_clientgo on  main [⇡] via 🐹 v1.19 ➜  cd $GOPATH/src
+
+controlplane ~/go/src ➜  date
+Fri 15 Dec 2023 02:48:38 AM EST
+```
+- Note the status of pkg directory.
+
+```
+controlplane ~/go/src ➜  ls -la /root/go/src/github.com/arshukla98/msys_clientgo/pkg
+total 12
+drwxr-xr-x 3 root root 4096 Dec 15 02:26 .
+drwxr-xr-x 4 root root 4096 Dec 15 02:35 ..
+drwxr-xr-x 3 root root 4096 Dec 15 02:26 apis
+```
+
+- Execute the following command.
+
+```
+controlplane ~/go/src ➜  bash k8s.io/code-generator/generate-groups.sh all \
+> github.com/arshukla98/msys_clientgo/pkg/generated \
+> github.com/arshukla98/msys_clientgo/pkg/apis monitoring:v1 \
+> --go-header-file k8s.io/code-generator/examples/hack/boilerplate.go.txt
+```
+
+The First lines execute the bash file with all option that is an alias for 
+"applyconfiguration,client,deepcopy,informer,lister".
+
+The Paths in second line defines the folder for generated files
+with respect to $GOPATH/src.
+
+The Paths in Third line are relative with respect to $GOPATH/src. 
+"monitoring:v1" represents to look for monitoring/v1 folder within 
+github.com/arshukla98/msys_clientgo/pkg/apis.
+
+The Fourth line depicts the location of header file with respect to $GOPATH/src.
+
+
+- Here is the output.
+
+```
+WARNING: generate-groups.sh is deprecated.
+WARNING: Please use k8s.io/code-generator/kube_codegen.sh instead.
+
+WARNING: Specifying "all" as a generator is deprecated.
+WARNING: Please list the specific generators needed.
+WARNING: "all" is now an alias for "applyconfiguration,client,deepcopy,informer,lister"; new code generators WILL NOT be added to this set
+
+WARNING: generate-internal-groups.sh is deprecated.
+WARNING: Please use k8s.io/code-generator/kube_codegen.sh instead.
+
+no required module provides package github.com/arshukla98/msys_clientgo/pkg/apis/monitoring/v1: go.mod file not found in current directory or any parent directory; see 'go help modules'
+Generating deepcopy funcs
+Generating apply configuration for monitoring:v1 at github.com/arshukla98/msys_clientgo/pkg/generated/applyconfiguration
+Generating clientset for monitoring:v1 at github.com/arshukla98/msys_clientgo/pkg/generated/clientset
+Generating listers for monitoring:v1 at github.com/arshukla98/msys_clientgo/pkg/generated/listers
+Generating informers for monitoring:v1 at github.com/arshukla98/msys_clientgo/pkg/generated/informers
+```
+
+- Here comes the generated directory few mins ago. Inspect it.
+
+```
+controlplane ~/go/src ➜  ls -la /root/go/src/github.com/arshukla98/msys_clientgo/pkg
+total 16
+drwxr-xr-x 4 root root 4096 Dec 15 02:50 .
+drwxr-xr-x 4 root root 4096 Dec 15 02:35 ..
+drwxr-xr-x 3 root root 4096 Dec 15 02:26 apis
+drwxr-xr-x 6 root root 4096 Dec 15 02:50 generated
+
+controlplane ~/go/src ➜  ls -la /root/go/src/github.com/arshukla98/msys_clientgo/pkg/generated
+total 24
+drwxr-xr-x 6 root root 4096 Dec 15 02:50 .
+drwxr-xr-x 4 root root 4096 Dec 15 02:50 ..
+drwxr-xr-x 4 root root 4096 Dec 15 02:50 applyconfiguration
+drwxr-xr-x 3 root root 4096 Dec 15 02:50 clientset
+drwxr-xr-x 3 root root 4096 Dec 15 02:50 informers
+drwxr-xr-x 3 root root 4096 Dec 15 02:50 listers
+
+controlplane ~/go/src ➜  date
+Fri 15 Dec 2023 02:50:29 AM EST
+```
+
+- Finally, we generated all the required files. You can see the files in git commit with title 
+"Generating Clientset, Informers and Listers".
+
+
