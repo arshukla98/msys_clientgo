@@ -127,3 +127,51 @@ register.go -> https://github.com/kubernetes/apiextensions-apiserver/blob/v0.28.
 
   You need to change at 3 points. No need to worry as you can see the changes in git version history.
 
+## Downloading dependencies
+
+- Make sure these are the environment variables set.
+
+```
+controlplane msys_clientgo on  main via 🐹 v1.19 ➜  echo $GOPATH, $GO111MODULE
+/root/go,
+
+controlplane msys_clientgo on  main via 🐹 v1.19 ➜  export GO111MODULE=off
+
+controlplane msys_clientgo on  main via 🐹 v1.19 ➜  echo $GOPATH, $GO111MODULE
+/root/go, off
+```
+- Here is the status of source folder.
+
+```
+controlplane msys_clientgo on  main via 🐹 v1.19 ➜  ls -la $GOPATH/src
+total 12
+drwxr-xr-x 3 root root 4096 Dec 15 02:26 .
+drwxr-xr-x 5 root root 4096 Dec 15 02:26 ..
+drwxr-xr-x 3 root root 4096 Dec 15 02:26 github.com
+```
+- Execute the commands shown below to download dependencies.
+
+```
+controlplane msys_clientgo on  main via 🐹 v1.19 ➜  go get -d ./...
+package cmp: unrecognized import path "cmp": import path does not begin with hostname
+
+controlplane msys_clientgo on  main via 🐹 v1.19 ✖ go get k8s.io/code-generator k8s.io/gengo/...
+```
+- Now you will notice that the dependencies are stored in source folder.
+
+```
+controlplane msys_clientgo on  main via 🐹 v1.19 ➜  ls -la $GOPATH/src
+total 28
+drwxr-xr-x 7 root root 4096 Dec 15 02:29 .
+drwxr-xr-x 5 root root 4096 Dec 15 02:26 ..
+drwxr-xr-x 7 root root 4096 Dec 15 02:29 github.com
+drwxr-xr-x 3 root root 4096 Dec 15 02:29 golang.org
+drwxr-xr-x 3 root root 4096 Dec 15 02:29 gopkg.in
+drwxr-xr-x 7 root root 4096 Dec 15 02:29 k8s.io
+drwxr-xr-x 5 root root 4096 Dec 15 02:29 sigs.k8s.io
+
+controlplane msys_clientgo on  main via 🐹 v1.19 ➜  ls $GOPATH/src/k8s.io
+apimachinery  code-generator  gengo  klog  utils
+
+controlplane msys_clientgo on  main via 🐹 v1.19 ➜
+```
